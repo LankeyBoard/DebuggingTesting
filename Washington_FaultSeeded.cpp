@@ -172,7 +172,7 @@ Student::Student(const string& name, const string& uid, const string& email, int
 
 void Student::displayStudentData() const
 {
-    using std::setw;
+    //using std::setw;
     cout << std::left
          << setw(MAX_NAME_EMAIL+2) << name
          << setw(MAX_UID+2) << uid
@@ -186,7 +186,10 @@ void Student::displayStudentData() const
 /******************************************************
  * Beginning of ClassRecords function implementations *
 ******************************************************/
-
+ClassRecords::ClassRecords()
+{
+    
+}
 void ClassRecords::fileInput()
 {
     string line, att, name, UID, email;
@@ -348,7 +351,7 @@ bool ClassRecords::editRecord(int key, const string& action, int update)
         {
             records[key].setPresentationGrade(update);
             recordUpdated = true;
-            return;
+            
         }
         else if (action == "ESSAY")
         {

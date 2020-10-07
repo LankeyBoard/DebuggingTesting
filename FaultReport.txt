@@ -4,5 +4,8 @@ Fault Report
 89 - int projGrade = 4  -> int projGrade = 4;
 162 - Student::Student(string& name, string& uid, string& email, int presGr, int essGr, int projGr) -> Student::Student(const string& name, const string& uid, const string& email, int presGr, int essGr, int projGr)
 194 - fin.open(ClassRecords.csv, ios::in); -> fin.open("ClassRecords.csv", ios::in);
-263 - insert missing }
+263 - } inserted
 322 - records[key]setUID(update); -> records[key].setUID(update);
+351 - return; removed
+
+189 - ClassRecords empy constructor added
