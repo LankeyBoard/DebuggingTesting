@@ -17,13 +17,13 @@
  * the 6 fields associated with a Student.
 */
 
-#include <string 
+#include <string>
 #include <iostream>
 #include <vector>
 #include <fstream>
 #include <sstream>
 #include <iomanip>
-using namespace; 
+using namespace std; 
 
 const string YESNO("(YES/NO)\n");
 
@@ -86,7 +86,7 @@ private:
     string email;
     int presGrade = 4;
     int essayGrade = 4;
-    int projGrade = 4 
+    int projGrade = 4;
 public:
     Student(string name, string uid, string email);
     Student(const string& name, const string& uid, const string& email, int presGr, int essGr, int projGr);
@@ -159,7 +159,7 @@ Student::Student(string name, string uid, string email)
     this->email = email.substr(0, MAX_NAME_EMAIL);
 }
 
-Student::Student(string& name, string& uid, string& email, int presGr, int essGr, int projGr)
+Student::Student(const string& name, const string& uid, const string& email, int presGr, int essGr, int projGr)
 {
     this->name = name.substr(0, MAX_NAME_EMAIL);
     this->uid = uid.substr(0, MAX_UID);
@@ -191,7 +191,7 @@ void ClassRecords::fileInput()
 {
     string line, att, name, UID, email;
     fstream fin; 
-    fin.open(ClassRecords.csv, ios::in);
+    fin.open("ClassRecords.csv", ios::in);
     if (fin.fail())
         return;
     while(getline(fin, line))
@@ -260,8 +260,8 @@ void ClassRecords::displayRecords()
 
         for (Student& s : records)
             s.displayStudentData();
+    }
 }
-
 
 int ClassRecords::searchRecords(string& identifier)
 {
@@ -319,7 +319,7 @@ bool ClassRecords::editRecord(int key, const string& action, string& update)
         }
         else if (action == "UID")
         {
-            records[key]setUID(update); 
+            records[key].setUID(update); 
             recordUpdated = true;
         }
         else if (action == "EMAIL")
