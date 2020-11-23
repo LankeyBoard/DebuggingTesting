@@ -9,3 +9,8 @@ Fault Report
 351 - return; removed
 
 189 - ClassRecords empy constructor added
+
+415 - changed getline to cin.ignore
+155 - student constructor inits -1 for no tracking grades
+243 - changed output storing widths
+240 - removed append file out setting

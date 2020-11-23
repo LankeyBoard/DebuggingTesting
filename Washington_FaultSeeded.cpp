@@ -73,7 +73,7 @@ void toUpperCase(string& string)
 void prompt_and_collect_choice(const string& PROMPT, string& choice)
 {
     cout << PROMPT;
-    cout << "Selection: ";
+    // cout << "Selection: ";
     cin >> choice;
     toUpperCase(choice);
 }
@@ -157,6 +157,9 @@ Student::Student(string name, string uid, string email)
     this->name = name.substr(MAX_NAME_EMAIL);
     this->uid = uid.substr(0, MAX_UID); 
     this->email = email.substr(0, MAX_NAME_EMAIL);
+    this->essayGrade = -1;
+    this->presGrade = -1;
+    this->projGrade = -1;
 }
 
 Student::Student(const string& name, const string& uid, const string& email, int presGr, int essGr, int projGr)
@@ -201,7 +204,7 @@ void ClassRecords::fileInput()
     {
         stringstream str(line); 
         int j=0;
-        int num, presGr=-1.0, essGr, projGr;
+        int num, presGr=-1, essGr=-1, projGr=-1;
         while (getline(str, att, ','))
         {
             if(j == 0)
@@ -234,14 +237,14 @@ void ClassRecords::fileInput()
 void ClassRecords::fileOutput()
 {
     fstream fout; 
-    fout.open("ClassRecords.csv", ios::out | ios::app);
+    fout.open("ClassRecords.csv", ios::out);
     for(int i=0; i<records.size(); i++)
     {   
-        fout << records.at(i).getName() << ",       " 
-        << records.at(i).getUID() << ",             "
-        << records.at(i).getEmail() << ",           "
-        << records.at(i).getPresGrade() << ",       "
-        << records.at(i).getEssayGrade() << ",      "
+        fout << records.at(i).getName() << string(MAX_NAME_EMAIL-records.at(i).getName().length(), ' ') << ","
+        << records.at(i).getUID() << string(MAX_UID-records.at(i).getUID().length(), ' ') << ","
+        << records.at(i).getEmail() << string(MAX_NAME_EMAIL-records.at(i).getEmail().length(), ' ') << ","
+        << records.at(i).getPresGrade() << "       ,"
+        << records.at(i).getEssayGrade() << "      ,"
         << records.at(i).getProjGrade() << "\n"; 
     } 
 }
@@ -295,7 +298,7 @@ bool ClassRecords::identifierMatch(const string& identifier)
 
 bool ClassRecords::addRecord(string& name, string& uid, string& email)
 {
-    records.emplace_back(Student(name, uid, email));
+    records.emplace_back(Student(name, uid, email, 0, 0, 0));
     //Stub: return false?
     return true;
 }
@@ -389,7 +392,7 @@ void ClassRecordsUI::search()
 {
     string search;
     cout << "Enter the name, UID, or email to be searched: ";
-    getline(cin, search);
+    getline(cin , search);
 
     int key;
     key = records.searchRecords(search);
@@ -413,11 +416,13 @@ void ClassRecordsUI::search()
 void ClassRecordsUI::add()
 {
     string name, uid, email, choice;
-    getline(cin, name);
+    cin.ignore();
     cout << "Enter \"FIRSTNAME LASTNAME\": ";
     getline(cin, name);
+    cin.ignore();
     cout << "Enter UID: ";
     getline(cin, uid);
+    cin.ignore();
     cout << "Enter Email: ";
     getline(cin, email);
 
