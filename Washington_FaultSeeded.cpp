@@ -17,13 +17,13 @@
  * the 6 fields associated with a Student.
 */
 
-#include <string 
+#include <string>
 #include <iostream>
 #include <vector>
 #include <fstream>
 #include <sstream>
 #include <iomanip>
-using namespace; 
+using namespace std; 
 
 const string YESNO("(YES/NO)\n");
 
@@ -73,7 +73,7 @@ void toUpperCase(string& string)
 void prompt_and_collect_choice(const string& PROMPT, string& choice)
 {
     cout << PROMPT;
-    cout << "Selection: ";
+    // cout << "Selection: ";
     cin >> choice;
     toUpperCase(choice);
 }
@@ -86,7 +86,7 @@ private:
     string email;
     int presGrade = 4;
     int essayGrade = 4;
-    int projGrade = 4 
+    int projGrade = 4;
 public:
     Student(string name, string uid, string email);
     Student(const string& name, const string& uid, const string& email, int presGr, int essGr, int projGr);
@@ -157,9 +157,12 @@ Student::Student(string name, string uid, string email)
     this->name = name.substr(MAX_NAME_EMAIL);
     this->uid = uid.substr(0, MAX_UID); 
     this->email = email.substr(0, MAX_NAME_EMAIL);
+    this->essayGrade = -1;
+    this->presGrade = -1;
+    this->projGrade = -1;
 }
 
-Student::Student(string& name, string& uid, string& email, int presGr, int essGr, int projGr)
+Student::Student(const string& name, const string& uid, const string& email, int presGr, int essGr, int projGr)
 {
     this->name = name.substr(0, MAX_NAME_EMAIL);
     this->uid = uid.substr(0, MAX_UID);
@@ -172,7 +175,7 @@ Student::Student(string& name, string& uid, string& email, int presGr, int essGr
 
 void Student::displayStudentData() const
 {
-    using std::setw;
+    //using std::setw;
     cout << std::left
          << setw(MAX_NAME_EMAIL+2) << name
          << setw(MAX_UID+2) << uid
@@ -186,19 +189,22 @@ void Student::displayStudentData() const
 /******************************************************
  * Beginning of ClassRecords function implementations *
 ******************************************************/
-
+ClassRecords::ClassRecords()
+{
+    
+}
 void ClassRecords::fileInput()
 {
     string line, att, name, UID, email;
     fstream fin; 
-    fin.open(ClassRecords.csv, ios::in);
+    fin.open("ClassRecords.csv", ios::in);
     if (fin.fail())
         return;
     while(getline(fin, line))
     {
         stringstream str(line); 
         int j=0;
-        int num, presGr=-1.0, essGr, projGr;
+        int num, presGr=-1, essGr=-1, projGr=-1;
         while (getline(str, att, ','))
         {
             if(j == 0)
@@ -231,14 +237,14 @@ void ClassRecords::fileInput()
 void ClassRecords::fileOutput()
 {
     fstream fout; 
-    fout.open("ClassRecords.csv", ios::out | ios::app);
+    fout.open("ClassRecords.csv", ios::out);
     for(int i=0; i<records.size(); i++)
     {   
-        fout << records.at(i).getName() << ",       " 
-        << records.at(i).getUID() << ",             "
-        << records.at(i).getEmail() << ",           "
-        << records.at(i).getPresGrade() << ",       "
-        << records.at(i).getEssayGrade() << ",      "
+        fout << records.at(i).getName() << string(MAX_NAME_EMAIL-records.at(i).getName().length(), ' ') << ","
+        << records.at(i).getUID() << string(MAX_UID-records.at(i).getUID().length(), ' ') << ","
+        << records.at(i).getEmail() << string(MAX_NAME_EMAIL-records.at(i).getEmail().length(), ' ') << ","
+        << records.at(i).getPresGrade() << "       ,"
+        << records.at(i).getEssayGrade() << "      ,"
         << records.at(i).getProjGrade() << "\n"; 
     } 
 }
@@ -260,8 +266,8 @@ void ClassRecords::displayRecords()
 
         for (Student& s : records)
             s.displayStudentData();
+    }
 }
-
 
 int ClassRecords::searchRecords(string& identifier)
 {
@@ -292,7 +298,7 @@ bool ClassRecords::identifierMatch(const string& identifier)
 
 bool ClassRecords::addRecord(string& name, string& uid, string& email)
 {
-    records.emplace_back(Student(name, uid, email));
+    records.emplace_back(Student(name, uid, email, 0, 0, 0));
     //Stub: return false?
     return true;
 }
@@ -319,7 +325,7 @@ bool ClassRecords::editRecord(int key, const string& action, string& update)
         }
         else if (action == "UID")
         {
-            records[key]setUID(update); 
+            records[key].setUID(update); 
             recordUpdated = true;
         }
         else if (action == "EMAIL")
@@ -348,7 +354,7 @@ bool ClassRecords::editRecord(int key, const string& action, int update)
         {
             records[key].setPresentationGrade(update);
             recordUpdated = true;
-            return;
+            
         }
         else if (action == "ESSAY")
         {
@@ -386,7 +392,7 @@ void ClassRecordsUI::search()
 {
     string search;
     cout << "Enter the name, UID, or email to be searched: ";
-    getline(cin, search);
+    getline(cin , search);
 
     int key;
     key = records.searchRecords(search);
@@ -410,11 +416,13 @@ void ClassRecordsUI::search()
 void ClassRecordsUI::add()
 {
     string name, uid, email, choice;
-    getline(cin, name);
+    cin.ignore();
     cout << "Enter \"FIRSTNAME LASTNAME\": ";
     getline(cin, name);
+    cin.ignore();
     cout << "Enter UID: ";
     getline(cin, uid);
+    cin.ignore();
     cout << "Enter Email: ";
     getline(cin, email);
 
