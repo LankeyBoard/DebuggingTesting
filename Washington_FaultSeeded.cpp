@@ -240,11 +240,11 @@ void ClassRecords::fileOutput()
     fout.open("ClassRecords.csv", ios::out);
     for(int i=0; i<records.size(); i++)
     {   
-        fout << records.at(i).getName() << string(MAX_NAME_EMAIL-records.at(i).getName().length(), ' ') << ","
-        << records.at(i).getUID() << string(MAX_UID-records.at(i).getUID().length(), ' ') << ","
-        << records.at(i).getEmail() << string(MAX_NAME_EMAIL-records.at(i).getEmail().length(), ' ') << ","
-        << records.at(i).getPresGrade() << "       ,"
-        << records.at(i).getEssayGrade() << "      ,"
+        fout << records.at(i).getName() << ","
+        << records.at(i).getUID() << ","
+        << records.at(i).getEmail()  << ","
+        << records.at(i).getPresGrade() << ","
+        << records.at(i).getEssayGrade() << ","
         << records.at(i).getProjGrade() << "\n"; 
     } 
 }
@@ -273,7 +273,9 @@ int ClassRecords::searchRecords(string& identifier)
 {
     for (int i = 0; i < records.size(); i++)
     {   
-        if ((identifier==records[i].getName()) || (identifier==records[i].getUID()) || (identifier==records[i].getEmail()))
+        if (records[i].getName().compare(identifier)==0
+        || records[i].getUID().compare(identifier)==0 
+        || records[i].getEmail().compare(identifier)==0)
         {
             //cout << "MATCH: ";
             //records[i].displayStudentData();
@@ -392,7 +394,9 @@ void ClassRecordsUI::search()
 {
     string search;
     cout << "Enter the name, UID, or email to be searched: ";
-    getline(cin , search);
+    cin.ignore(MAX_NAME_EMAIL,'\n');
+    getline(cin , search, '\n');
+    
 
     int key;
     key = records.searchRecords(search);
@@ -416,15 +420,13 @@ void ClassRecordsUI::search()
 void ClassRecordsUI::add()
 {
     string name, uid, email, choice;
-    cin.ignore();
     cout << "Enter \"FIRSTNAME LASTNAME\": ";
-    getline(cin, name);
     cin.ignore();
+    getline(cin, name, '\n');
     cout << "Enter UID: ";
-    getline(cin, uid);
-    cin.ignore();
+    getline(cin, uid, '\n');
     cout << "Enter Email: ";
-    getline(cin, email);
+    getline(cin, email, '\n');
 
     cout << "Add grades for this student? ";
     prompt_and_collect_choice(YESNO, choice);

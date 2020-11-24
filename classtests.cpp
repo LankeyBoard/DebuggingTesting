@@ -21,6 +21,6 @@ TEST_CASE ("Test cases for classRecords"){
 	//zero should be the index of tony
 	REQUIRE(testrecords.getSize() == 2);
 	REQUIRE(testrecords.searchRecords(name) == 0 );
-	REQUIRE(testrecords.searchRecords(name2) == 0 );
+	REQUIRE(testrecords.searchRecords(name2) == 1 );
 
 }

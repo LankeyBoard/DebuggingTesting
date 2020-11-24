@@ -14,3 +14,5 @@ Fault Report
 155 - student constructor inits -1 for no tracking grades
 243 - changed output storing widths
 240 - removed append file out setting
+276 - reworked search line to use stringcompare and or
+## - everywhere there was a getline, I added cin.ignore() after it
