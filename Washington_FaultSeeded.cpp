@@ -139,14 +139,14 @@ public:
     void run();
 };
 
-
+#ifndef DEBUG
 int main()
 {
     ClassRecordsUI pgm = ClassRecordsUI();
     pgm.run();
     return 0;
 }
-
+#endif /* DEBUG */
 
 /******************************************************
  *   Beginning of Student function implementations    *
@@ -267,7 +267,7 @@ int ClassRecords::searchRecords(string& identifier)
 {
     for (int i = 0; i < records.size(); i++)
     {   
-        if ((identifier==records[i].getName()) && (identifier==records[i].getUID()) && (identifier==records[i].getEmail()))
+        if ((identifier==records[i].getName()) || (identifier==records[i].getUID()) || (identifier==records[i].getEmail()))
         {
             //cout << "MATCH: ";
             //records[i].displayStudentData();
