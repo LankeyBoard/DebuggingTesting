@@ -15,11 +15,12 @@ TEST_CASE ("Test cases for classRecords"){
 
 	string name2 = string("bob ross");
 	string uid2 = string("12345678");
-	string emai2 = string("bobross@example.net");
-	testrecords.addRecord(name,uid,email);
+	string email2 = string("bobross@example.net");
+	testrecords.addRecord(name2,uid2,email2);
+	testrecords.addRecord(name2,uid2,email2);
 
 	//zero should be the index of tony
-	REQUIRE(testrecords.getSize() == 2);
+	REQUIRE(testrecords.getSize() == 3);
 	REQUIRE(testrecords.searchRecords(name) == 0 );
 	REQUIRE(testrecords.searchRecords(name2) == 1 );
 

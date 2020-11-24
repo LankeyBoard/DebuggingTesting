@@ -273,9 +273,9 @@ int ClassRecords::searchRecords(string& identifier)
 {
     for (int i = 0; i < records.size(); i++)
     {   
-        if (records[i].getName().compare(identifier)==0
-        || records[i].getUID().compare(identifier)==0 
-        || records[i].getEmail().compare(identifier)==0)
+        if (records[i].getName() == identifier
+        || records[i].getUID() == identifier
+        || records[i].getEmail() == identifier)
         {
             //cout << "MATCH: ";
             //records[i].displayStudentData();
